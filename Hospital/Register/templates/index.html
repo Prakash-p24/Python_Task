@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    
+    <div class="d-flex justify-content-center mx-auto m-5 mx-auto p-2"  >        
+       
+        <div class="p-3 mb-2 bg-primary-subtle text-primary-emphasis" class="text-body-tertiary" >
+            <div class="w-250 p-5" > 
+                <h1 >Hospital Appointment Form</h1><hr><br>
+                <form action="Register/success" method="POST" >
+                {% csrf_token %}
+                <div >
+                    <label for="your_name" class="form-label text-black" >Name</label>
+                    <input type="text" class="form-control" id="your_name" name="name" placeholder="Enter your name ...">
+    
+                </div><br>
+                <div class="mb-3">
+                    <label for="your_name" class="form-label text-black" >Age</label>
+                    <input type="text" class="form-control" id="your_name" name="age" placeholder="Enter your age ...">
+                </div><br>
+                    <label class="form-label text-black d-block">Gender</label>
+                <div style="padding-left: 50px;">
+                    <div class="form-check form-check-inline">
+                       <input class="form-check-input" type="radio" name="gender" id="male" value="Male">
+                       <label class="form-check-label text-black" for="male">Male</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="female" value="Female">
+                      <label class="form-check-label text-black" for="female">Female</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="other" value="Other">
+                      <label class="form-check-label text-black" for="other">Other</label>
+                    </div>
+                </div><br>
+
+                    <label class="text-black ">Concerns</label><br><br>
+                    <div class="form-floating">
+                        <textarea class="form-control" name="concerns" placeholder="Enter your concerns here"  style="height: 100px"></textarea>
+                    </div><br><br>
+                    <div class="row">
+                        <div class="col" >
+                            <label for="your_name" class="text-black " >Phone Number  </label>
+                        </div>
+                       <div class="col">
+                            <input id="your_name" type="text" name="phone" style="width: 240px;">
+                        </div>
+                    </div><br><br>
+                    <div class="row">
+                        <div class="col">
+                            <label class="text-black">Choose Doctor </label>
+                        </div>
+                        <div class="col">
+                            <select id="doctor" name="doctor" class="form-select form-select-sm" aria-label="Small select example" required>
+                                <option value="" class="text-black ">-- Select Doctor --</option>
+                            {% for doctor in doctors %}
+                                <option value="{{ doctor.Id }}" >{{ doctor.Name }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                    </div><br></br>
+                    <div class="row">
+                        <div class="col">
+                            <label for="your_name" class="text-black " >Date </label>
+                        </div>
+                        <div class="col">
+                            <input id="date" type="date" name="date" style="width: 240px;" required>
+                        </div>
+                    </div><br><br> 
+                    <div class="row">
+                        <div class="col">
+                            <label class="text-black ">Choose Slot </label>
+                        </div>
+                        <div class="col">
+                            <select id="slot" name="slot" class="form-select form-select-sm" aria-label="Small select example" required>
+                                <option value="" class="text-black " >-- Select Slot --</option>
+                            </select>
+                        </div>
+                    </div><br><br><br>
+                    <div class="d-flex justify-content-center">
+                        <input type="submit" value="Book an Appointment" class="btn btn-success">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script src="{% static 'js_file/hospital.js' %}"></script> 
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+</body>
+</html>
+
+
+
+
