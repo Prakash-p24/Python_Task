@@ -9,6 +9,10 @@ class Doctor(models.Model):
     Specialization = models.CharField(max_length=255)
     Phone_Number = models.BigIntegerField()
 
+
+    class Meta:
+        db_table = 'doctor' 
+
     def __str__(self):
         return f"Doctor: {self.Name}"
     
@@ -18,6 +22,9 @@ class Slot(models.Model):
     Slot_Id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     Start_time = models.TimeField()
     End_time = models.TimeField()
+
+    class Meta:
+        db_table = 'slot' 
 
     def __str__(self):
         return f"Slot {self.Id} ({self.Start_time} - {self.End_time})"
@@ -38,7 +45,8 @@ class Patient(models.Model):
     Concerns = models.TextField()
     Phone_Number = models.BigIntegerField()
 
-    
+    class Meta:
+        db_table = 'patient'  
 
     def __str__(self):
         return f"Patient: {self.Name}"
@@ -65,3 +73,6 @@ class Bookings(models.Model):
     )
     Date = models.DateField()
     is_booked = models.BooleanField(default= True)
+
+    class Meta:
+        db_table = 'bookings'
