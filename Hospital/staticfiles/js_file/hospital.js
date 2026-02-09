@@ -6,38 +6,60 @@ document.addEventListener("DOMContentLoaded", function() {
     function fetchSlots() {
         const doctorId = doctorSelect.value;
         const date = dateInput.value;
-        console.log("Doctor:", doctorId, "Date:", date); 
+        console.log("Doctor:", doctorId, "Date:", date);
 
         if (doctorId && date) {
-            fetch("{% url 'get_slots' %}?doctor_id=" + doctorId + "&date=" + date)
+            fetch(`/get-slots/?doctor_id=${doctorId}&date=${date}`)
+
                 .then(response => response.json())
                 .then(data => {
-                    console.log("Slots data:", data); 
-                    slotSelect.innerHTML = '<option value="">-- Select Slot --</option>';
-                        if (data.slots.length > 0) {
-                           data.slots.forEach(slot => {
-                           const option = document.createElement("option");
-                           option.value = slot.start;
-                            option.textContent = `${slot.start} - ${slot.end}`;
-                            slotSelect.appendChild(option);
-                          });
-}                       else {
-                            const option = document.createElement("option");
-                            option.textContent = 'No Available Slots';
-                            slotSelect.appendChild(option);
-}
+                    console.log("Slots data:", data);
 
-                        if (data.book && data.book.length > 0) {
-                             data.book.forEach(books => {
-                             const option = document.createElement("option");
-                             option.value = books.start;
-                             option.textContent = `${books.start} - ${books.end}`;
-                             option.disabled = true; 
+                    // Clear old options
+                    slotSelect.innerHTML = "";
+                    const defaultOption = document.createElement("option");
+                    defaultOption.textContent = "-- Select Slot --";
+                    defaultOption.disabled = true;
+                    defaultOption.selected = true;
+                    slotSelect.appendChild(defaultOption);
+
+                    let allSlots = [];
+
+                    if (Array.isArray(data.slots)) {
+                        allSlots.push(...data.slots.map(s => ({ ...s, booked: false })));
+                        console.log(allSlots)
+                    }
+                    if (Array.isArray(data.book)) {
+                        allSlots.push(...data.book.map(s => ({ ...s, booked: true })));
+                    }
+
+   
+                    allSlots.sort((a, b) => {
+                        return a.start.localeCompare(b.start);
+                    });
+
+                    // Append sorted slots
+                    if (allSlots.length > 0) {
+                        allSlots.forEach(slot => {
+                            const option = document.createElement("option");
+                            option.value = slot.start;
+                            option.textContent = `${slot.start} - ${slot.end}`;
+                            if (slot.booked) {
+                                option.disabled = true; // booked slot
+                                option.textContent += " (Booked)";
+                            }
                             slotSelect.appendChild(option);
-    });
-}                       
+                        });
+                    } else {
+                        const option = document.createElement("option");
+                        option.textContent = "No Available Slots";
+                        option.disabled = true;
+                        slotSelect.appendChild(option);
+                    }
                 })
-                .catch(err => console.error("Error fetching slots:", err));
+                .catch(error => {
+                    console.error("Error fetching slots:", error);
+                });
         }
     }
 
